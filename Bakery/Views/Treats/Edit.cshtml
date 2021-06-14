@@ -1,5 +1,6 @@
 @{
-  Layout = "_Layout"; }
+  Layout = "_Layout";
+}
 
 @model Baker.Models.Treat
 
@@ -9,7 +10,7 @@
 
 @using (Html.BeginForm())
 {
-  @Html.HiddenFor(model => model.RecipeId)
+  @Html.HiddenFor(model => model.TreatId)
 
   @Html.LabelFor(model => model.Name)
   @Html.TextBoxFor(model => model.Name, new {@class = "form-control", type="text", required="text"} )
