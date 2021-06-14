@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Bsakery.Controllers
+namespace Bakery.Controllers
 {
   [Authorize]
   public class TreatsController : Controller
@@ -17,7 +17,7 @@ namespace Bsakery.Controllers
     private readonly BakeryContext _db;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public TreatsController(UserManager<ApplicationUser> userManager, BNakeryContext db)
+    public TreatsController(UserManager<ApplicationUser> userManager, BakeryContext db)
     {
       _userManager = userManager;
       _db = db;
@@ -30,7 +30,7 @@ namespace Bsakery.Controllers
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       if (userId != null) {
         var currentUser = await _userManager.FindByIdAsync(userId);
-        var userTreats = _db.treats.Where(entry => entry.User.Id == currentUser.Id).ToList();
+        var userTreats = _db.Treats.Where(entry => entry.User.Id == currentUser.Id).ToList();
         return View(userTreats);
       }
       else { return View(allTreats); }
@@ -52,7 +52,7 @@ namespace Bsakery.Controllers
       _db.SaveChanges();
       if (FlavorId != 0)
       {
-        _db.FlavorTreats.Add(new FlavorTreat() { FlavorId = FlavorId, TreatId = treat.Treatd });
+        _db.FlavorTreats.Add(new FlavorTreat() { FlavorId = FlavorId, TreatId = treat.TreatId });
       }
       _db.SaveChanges();
       return RedirectToAction("Index");
@@ -82,8 +82,6 @@ namespace Bsakery.Controllers
       {
         _db.FlavorTreats.Add(new FlavorTreat() { FlavorId = FlavorId, TreatId = treat.TreatId });
       }
-      else
-      {
       _db.Entry(treat).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");

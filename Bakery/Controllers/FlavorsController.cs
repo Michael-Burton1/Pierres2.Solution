@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.Security.Claims;
 
-namespace RecipeBox.Controllers
+namespace Bakery.Controllers
 {
   [Authorize]
   public class FlavorsController : Controller
@@ -32,7 +32,7 @@ namespace RecipeBox.Controllers
     {
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
-      var userRecipes = _db.Recipes.Where(entry => entry.User.Id == currentUser.Id).ToList();
+      var userTreats = _db.Treats.Where(entry => entry.User.Id == currentUser.Id).ToList();
       ViewBag.TreatId = new SelectList(userTreats, "TreatId", "Name");
       return View();
     }
@@ -46,7 +46,7 @@ namespace RecipeBox.Controllers
       _db.SaveChanges();
       if (TreatId != 0)
       {
-        _db.FlavorTreats.Add(new FlavorTreats() { TreatId = TreatId, FlavorId = flavor.FlavorId });
+        _db.FlavorTreats.Add(new FlavorTreat() { TreatId = TreatId, FlavorId = flavor.FlavorId });
       }
       _db.SaveChanges();
       return RedirectToAction("Index");
@@ -70,7 +70,7 @@ namespace RecipeBox.Controllers
     {
       if (TreatId != 0)
       {
-        _db.FlavorTreats.Add(new FlavorTreats() { TreatId = TreatId, FlavorId = flavor.FlavorId });
+        _db.FlavorTreats.Add(new FlavorTreat() { TreatId = TreatId, FlavorId = flavor.FlavorId });
       }
       _db.Entry(flavor).State = EntityState.Modified;
       _db.SaveChanges();
@@ -81,7 +81,7 @@ namespace RecipeBox.Controllers
     {
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
-      var userTrests = _db.Treats.Where(entry => entry.User.Id == currentUser.Id).ToList();
+      var userTreats = _db.Treats.Where(entry => entry.User.Id == currentUser.Id).ToList();
       var thisFlavor = _db.Flavors.FirstOrDefault(flavor => flavor.FlavorId == id);
       ViewBag.TreatId = new SelectList(userTreats, "TreatId", "Name");
       return View(thisFlavor);
@@ -91,7 +91,7 @@ namespace RecipeBox.Controllers
     [HttpPost]
     public ActionResult AddTreat(Treat treat, int FlavorId)
     {
-      if (TreatId != 0)
+      if (FlavorId != 0)
       {
         _db.FlavorTreats.Add(new FlavorTreat() { FlavorId = FlavorId, TreatId = treat.TreatId });
       }
@@ -115,7 +115,7 @@ namespace RecipeBox.Controllers
     [HttpPost]
     public ActionResult DeleteFlavor(int joinId)
     {
-      var joinEntry = _db.FlavorTreats.FirstOrDefault(entry => entry.FlavorTreatsId == joinId);
+      var joinEntry = _db.FlavorTreats.FirstOrDefault(entry => entry.FlavorTreatId == joinId);
       _db.FlavorTreats.Remove(joinEntry);
       _db.SaveChanges();
       return RedirectToAction("Index");
