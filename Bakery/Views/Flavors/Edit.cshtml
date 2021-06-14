@@ -1,0 +1,29 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Bakery.Models.Flavor
+
+<h2>Edit</h2>
+
+<h4>Edit this flavor: @Html.DisplayFor(model => model.Name)</h4>
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.FlavorId)
+
+  @Html.LabelFor(model => model.Name)
+  @Html.EditorFor(model => model.Name new {@class = "form-control", type="text", required="text"} )
+)
+
+@Html.LabelFor(model => model.Type)
+@Html.EditorFor(model => model.Type new {class = "form-control", type="text", required="text"} ))
+
+@Html.LabelFor(model => model.Rating)
+@Html.EditorFor(model => model.Rating new {class = "form-control", type="number", min ="1", max="10", step=".5",
+required="text"} ))
+
+< input type = "submit" value = "Save" />
+}
+
+<p>@Html.ActionLink("Back to list", "Index")</p>

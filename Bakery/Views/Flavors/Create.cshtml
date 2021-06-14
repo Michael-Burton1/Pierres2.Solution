@@ -15,7 +15,8 @@
   @Html.TextBoxFor(model => model.Type, new {@class = "form-control", type="text", required="text"})
 
   @Html.LabelFor(model => model.Rating)
-  @Html.TextBoxFor(model => model.Rating, new {@class = "form-control", type="number", required="text"})
+  @Html.TextBoxFor(model => model.Rating, new {@class = "form-control", type="number", max="10", min ="1", step =".5",
+required="text"})
 
   <input type="submit" value="Add new flavor" class="btn btn-primary" />
 }
